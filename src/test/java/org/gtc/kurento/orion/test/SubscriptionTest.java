@@ -34,7 +34,7 @@ class SubscriptionTest {
     private static final OrionConnectorConfiguration config = new OrionConnectorConfiguration();
     private static final String expectedJsonBody = "{\"description\":\"This is a test\"," 
     + "\"subject\":{\"entities\":[{\"id\":\"Room1\",\"type\":\"Room\"}]" 
-    + "},\"notification\":{\"http\":{\"url\":\"http://127.0.0.0\"},\"attrs\":[\"temperature\"]},\"expires\":\"2021-07-30T00:00:00Z\"," 
+    + "},\"notification\":{\"http\":{\"url\":\"http://127.0.0.0\"},\"attrs\":[\"temperature\"]},\"expires\":\"2022-07-30T00:00:00Z\"," 
     + "\"throttling\":5}";
     private static final List<String> subscriptions = new ArrayList<>();
     private static final OrionSubscriptionManager subscriptionManager = new OrionSubscriptionManager(config);
@@ -44,7 +44,7 @@ class SubscriptionTest {
     static void init_Test() {
         req = new SubscriptionRequest();
         req.setDescription("This is a test");
-        req.setExpiringDate(java.sql.Date.valueOf("2021-07-30"));
+        req.setExpiringDate(java.sql.Date.valueOf("2022-07-30"));
         req.setThrottling(5);
         req.setNotificationUrl("http://127.0.0.0");
         EntityPattern a = new EntityPattern();
@@ -84,6 +84,7 @@ class SubscriptionTest {
         Exception exception = assertThrows(OrionSubscriptionException.class, () -> {
             SubscriptionResponse response = subscriptionManager.subscribe(req);
         });
+        req.setNotificationUrl("http://127.0.0.0");
     
         assertTrue(exception.getMessage().equals("Orion could not create the subscrition. Orion responded with 400 status code"));
     }

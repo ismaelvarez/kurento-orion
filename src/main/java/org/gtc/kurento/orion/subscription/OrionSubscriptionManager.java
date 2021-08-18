@@ -39,6 +39,7 @@ public class OrionSubscriptionManager extends OrionSubscription {
     public SubscriptionResponse subscribe(SubscriptionRequest request) {
         if (request != null) {
             String jsonEntity = gson.toJson(request);
+            log.info("Subscription: {}", jsonEntity);
             HttpResponse response = null;
             try {
                 response = httpClient.post(getSubscriptionUri(), createHeaders(), jsonEntity).returnResponse();
@@ -68,7 +69,7 @@ public class OrionSubscriptionManager extends OrionSubscription {
 
     @Override
     public boolean unsubscribe(String subscriptionId) {
-        Response response = httpClient.delete(getSubscriptionUri() + "/" + subscriptionId, createHeaders(), null);
+        Response response = httpClient.delete(getSubscriptionUri() + "/" + subscriptionId, new ArrayList<>(), null);
         try {
             return response.returnResponse().getStatusLine().getStatusCode() == HttpStatus.SC_NO_CONTENT;
         } catch (IOException e) {
